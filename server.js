@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/datatable', async (req, res) => {
-    console.log(req.query)
     let params = []
 
     if(req.query.search.value){
@@ -34,8 +33,6 @@ app.get('/datatable', async (req, res) => {
     const offset = req.query.start
     const sortBy = req.query.columns[req.query.order[0].column].data
     const sortMode = req.query.order[0].dir
-
-    console.log(sortBy, sortMode)
 
     const total = await db.query(`select count(*) as total from users${params.length > 0 ? ` where ${params.join(' or ')}` : ''}`)
     const data = await db.query(`select * from users${params.length > 0 ? ` where ${params.join(' or ')}` : ''} order by ${sortBy} ${sortMode} limit ${limit} offset ${offset} `)
